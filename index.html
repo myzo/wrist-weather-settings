@@ -9,14 +9,68 @@
 				background: #faf8ef;
 			}
 			
-			#main-div {
+			#content {
+				padding-left: 100px;
 				height: 500px;
+			}
+			
+			input {
+				width: 20px;
+				height: 20px;
 			}
 		</style>
 	</head>
 	<body>
-		<div id="main-div">
-			<h1>Hello World</h1>
+		<h1>Settings</h1>
+		<div id="content" align="left">
+			<h3>Content of Daily Summary</h3>
+			<form align="left">
+				<input type="checkbox" class="dailySummaryOptions" name="temp" value="temperature">
+				<label for="temp">Temperature</label></br>
+				<input type="checkbox" class="dailySummaryOptions" name="precip" value="precipitation">
+				<label for="precip">Precipitation</label></br>
+				<input type="checkbox" class="dailySummaryOptions" name="light" value="light">
+				<label for="light">Light</label></br>
+				<input type="checkbox" class="dailySummaryOptions" name="misc" value="misc">
+				<label for="misc">Miscellaneous</label></br>
+			</form>
 		</div>
+		<button id="save_button">Save</button>
+		
+		<script>
+			var dailySummaryOptions = document.getElementsByClassName("dailySummaryOptions");
+			var savedSettings = localStorage.settings;
+			
+			if (savedSettings !== undefined) {
+				savedSettings = JSON.parse(savedSettings);
+				console.log("Settings in local storage");
+				var dailySummaryOptionsStates = savedSettings.summaryOptions;
+				for (var i = 0, length = dailySummaryOptions.length; i < length; i++) {
+					dailySummaryOptions[i].checked = dailySummaryOptionsStates[i];
+				}
+			}
+			
+			function saveOptions() {
+        		var settings = {
+          			"summaryOptions": []
+        		};
+        		
+        		for (var i = 0, length = dailySummaryOptions.length; i < length; i++) {
+        			settings.summaryOptions.push(dailySummaryOptions[i].checked);
+        		}
+        		
+        		settings = JSON.stringify(settings);
+        		localStorage.settings = settings;
+        		return settings;
+      		}
+      		
+      		var submitButton = document.getElementById("save_button");
+      		submitButton.addEventListener("click", 
+        		function () {
+          			document.location = "pebblejs://close#" + encodeURIComponent(saveOptions());
+        		},
+        		false
+      		);
+		</script>
 	</body>
 </html>
