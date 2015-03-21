@@ -49,8 +49,10 @@
           			"dailySummaryOptions": {}
         		};
         		
-        		for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
-        			settings.dailySummaryOptions[dailySummaryOptionElements[i].name] = dailySummaryOptionElements[i].checked;
+        		for (var i = 0, length = dailySummaryOptions.length; i < length; i++) {
+        			if (dailySummaryOptions[i].checked) {
+        				settings.summaryOptions.push(dailySummaryOptions[i].name);
+        			}
         		}
         		
         		settings = JSON.stringify(settings);
