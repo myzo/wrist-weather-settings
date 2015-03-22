@@ -37,6 +37,13 @@
 		</p>
 		
 		<script>
+			var bool = true;
+			
+			if (bool) {
+				localStorage.removeItem("settings");
+				bool = false;
+			}			
+			
 			var dailySummaryOptionElements = document.getElementsByClassName("dailySummaryOptionElements");
 			var savedSettings = localStorage.settings;
 			
