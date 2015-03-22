@@ -38,26 +38,23 @@
 			
 			if (savedSettings !== undefined) {
 				savedSettings = JSON.parse(savedSettings);
-				var dailySummaryOptionValues = savedSettings.summaryOptionValues;
+				var dailySummaryOptionValues = savedSettings.dailySummaryOptions;
 				for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
-					dailySummaryOptionElements[i].checked = dailySummaryOptionValues[i];
+					dailySummaryOptionElements[i].checked = dailySummaryOptionValues[dailySummaryOptionElements[i].name];
 				}
 			}
 			
 			function saveOptions() {
         		var settings = {
-          			"summaryOptionNames": [],
-          			"summaryOptionValues": []
+          			"dailySummaryOptions": {}
         		};
         		
         		for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
-        			settings.summaryOptionValues.push(dailySummaryOptionElements[i].checked);
-        			if (dailySummaryOptionElements[i].checked) {
-        				settings.summaryOptionNames.push(dailySummaryOptionElements[i].name);
-        			}
+        			settings.dailySummaryOptions[dailySummaryOptionElements[i].name] = dailySummaryOptionElements[i].checked;
         		}
         		
         		settings = JSON.stringify(settings);
+        		console.log(settings);
         		localStorage.settings = settings;
         		return settings;
       		}
