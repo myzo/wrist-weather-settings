@@ -30,7 +30,11 @@
 				<label for="misc">Miscellaneous</label></br>
 			</form>
 		</div>
-		<button id="save_button">Save</button>
+		
+		<p>
+			<button id="save_button">Save</button>
+			<button id="reset_button">Reset</button>
+		</p>
 		
 		<script>
 			var dailySummaryOptionElements = document.getElementsByClassName("dailySummaryOptionElements");
@@ -58,6 +62,14 @@
         		localStorage.settings = settings;
         		return settings;
       		}
+      		
+      		var resetButton = document.getElementById("reset_button");
+      		resetButton.addEventListener("click",
+      			function () {
+      				localStorage.removeItem("settings");
+      			},
+      			false
+      		);
       		
       		var submitButton = document.getElementById("save_button");
       		submitButton.addEventListener("click", 
