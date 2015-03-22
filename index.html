@@ -9,11 +9,6 @@
 				background: #faf8ef;
 			}
 			
-			#content {
-				padding-left: 100px;
-				height: 500px;
-			}
-			
 			input {
 				width: 20px;
 				height: 20px;
@@ -25,43 +20,41 @@
 		<div id="content" align="left">
 			<h3>Content of Daily Summary</h3>
 			<form align="left">
-				<input type="checkbox" class="dailySummaryOptions" name="temp" value="temperature">
+				<input type="checkbox" class="dailySummaryOptionElements" name="temp" value="temperature">
 				<label for="temp">Temperature</label></br>
-				<input type="checkbox" class="dailySummaryOptions" name="precip" value="precipitation">
+				<input type="checkbox" class="dailySummaryOptionElements" name="precip" value="precipitation">
 				<label for="precip">Precipitation</label></br>
-				<input type="checkbox" class="dailySummaryOptions" name="light" value="light">
+				<input type="checkbox" class="dailySummaryOptionElements" name="light" value="light">
 				<label for="light">Light</label></br>
-				<input type="checkbox" class="dailySummaryOptions" name="misc" value="misc">
+				<input type="checkbox" class="dailySummaryOptionElements" name="misc" value="misc">
 				<label for="misc">Miscellaneous</label></br>
 			</form>
 		</div>
 		<button id="save_button">Save</button>
 		
 		<script>
-			var dailySummaryOptions = document.getElementsByClassName("dailySummaryOptions");
+			var dailySummaryOptionElements = document.getElementsByClassName("dailySummaryOptionElements");
 			var savedSettings = localStorage.settings;
 			
 			if (savedSettings !== undefined) {
 				savedSettings = JSON.parse(savedSettings);
-				console.log("Settings in local storage");
-				var dailySummaryOptionsStates = savedSettings.summaryOptions;
-				for (var i = 0, length = dailySummaryOptions.length; i < length; i++) {
-					dailySummaryOptions[i].checked = dailySummaryOptionsStates[i];
+				var dailySummaryOptionValues = savedSettings.dailySummaryOptions;
+				for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
+					dailySummaryOptionElements[i].checked = dailySummaryOptionValues[dailySummaryOptionElements[i].name];
 				}
 			}
 			
 			function saveOptions() {
         		var settings = {
-          			"summaryOptions": []
+          			"dailySummaryOptions": {}
         		};
         		
-        		for (var i = 0, length = dailySummaryOptions.length; i < length; i++) {
-        			if (dailySummaryOptions[i].checked) {
-        				settings.summaryOptions.push(dailySummaryOptions[i].name);
-        			}
+        		for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
+        			settings.dailySummaryOptions[dailySummaryOptionElements[i].name] = dailySummaryOptionElements[i].checked;
         		}
         		
         		settings = JSON.stringify(settings);
+        		console.log(settings);
         		localStorage.settings = settings;
         		return settings;
       		}
