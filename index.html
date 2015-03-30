@@ -13,6 +13,10 @@
 				width: 20px;
 				height: 20px;
 			}
+			
+			.frequencySelect {
+				height: 30px;
+			}
 		</style>
 	</head>
 	<body>
@@ -31,6 +35,22 @@
 			</form>
 		</div>
 		
+		<div id="advanced" align="left">
+			<h3>Update Frequency</h3>
+			<select class="frequencySelect" id="timeFrequency">
+				<option value="0">Every Time</option>
+				<option value="30">Every 30 Minutes</option>
+				<option value="60">Every 1 Hour</option>
+				<option value="180">Every 3 Hours</option>
+			</select>
+
+			<select class="frequencySelect" id="distanceFrequency">
+				<option value="3">Move 100 Metres</option>
+				<option value="2">Move 1 Kilometre</option>
+				<option value="1">Move 10 Kilometres</option>
+			</select>
+		</div>
+		
 		<p>
 			<button id="save_button">Save</button>
 			<button id="reset_button">Reset</button>
@@ -42,20 +62,28 @@
 			
 			if (savedSettings !== undefined) {
 				savedSettings = JSON.parse(savedSettings);
+				
 				var dailySummaryOptionValues = savedSettings.dailySummaryOptions;
 				for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
 					dailySummaryOptionElements[i].checked = dailySummaryOptionValues[dailySummaryOptionElements[i].name];
 				}
+				
+				document.getElementById("timeFrequency").value = savedSettings.updateFrequency.time;
+				document.getElementById("distanceFrequency").value = savedSettings.updateFrequency.distance;
 			}
 			
 			function saveOptions() {
         		var settings = {
-          			"dailySummaryOptions": {}
+          			"dailySummaryOptions": {},
+          			"updateFrequency": {}
         		};
         		
         		for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
         			settings.dailySummaryOptions[dailySummaryOptionElements[i].name] = dailySummaryOptionElements[i].checked;
         		}
+        		
+        		settings.updateFrequency.time = document.getElementById("timeFrequency").value;
+        		settings.updateFrequency.distance = document.getElementById("distanceFrequency").value;
         		
         		settings = JSON.stringify(settings);
         		console.log(settings);
