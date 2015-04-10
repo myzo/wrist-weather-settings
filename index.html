@@ -3,6 +3,7 @@
 	<head>
 		<title>Wrist Weather Settings</title>
 		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 		<style>
 			body {
 				text-align: center;
@@ -20,36 +21,47 @@
 		</style>
 	</head>
 	<body>
-		<h1>Settings</h1>
-		<div id="content" align="left">
-			<h3>Content of Daily Summary</h3>
-			<form align="left">
-				<input type="checkbox" class="dailySummaryOptionElements" name="temp" value="temperature">
-				<label for="temp">Temperature</label></br>
-				<input type="checkbox" class="dailySummaryOptionElements" name="precip" value="precipitation">
-				<label for="precip">Precipitation</label></br>
-				<input type="checkbox" class="dailySummaryOptionElements" name="light" value="light">
-				<label for="light">Light</label></br>
-				<input type="checkbox" class="dailySummaryOptionElements" name="misc" value="misc">
-				<label for="misc">Miscellaneous</label></br>
-			</form>
+		<div class="container-fluid">
+			<div class="jumbotron">
+				<h1>Settings</h1>
+			</div>
 		</div>
 		
-		<div id="advanced" align="left">
-			<h3>Update Frequency</h3>
-			<select class="frequencySelect" id="timeFrequency">
-				<option value="0">Every Time</option>
-				<option value="30">Every 30 Minutes</option>
-				<option value="60">Every 1 Hour</option>
-				<option value="180">Every 3 Hours</option>
-			</select>
-
-			<select class="frequencySelect" id="distanceFrequency">
-				<option value="3">Move 100 Metres</option>
-				<option value="2">Move 1 Kilometre</option>
-				<option value="1">Move 10 Kilometres</option>
-			</select>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-6" id="content" align="left">
+					<h3>Content of Daily Summary</h3>
+					<form>
+						<input type="checkbox" class="dailySummaryOptionElements" name="temp" value="temperature">
+						<label for="temp">Temperature</label></br>
+						<input type="checkbox" class="dailySummaryOptionElements" name="precip" value="precipitation">
+						<label for="precip">Precipitation</label></br>
+						<input type="checkbox" class="dailySummaryOptionElements" name="light" value="light">
+						<label for="light">Light</label></br>
+						<input type="checkbox" class="dailySummaryOptionElements" name="misc" value="misc">
+						<label for="misc">Miscellaneous</label></br>
+					</form>
+				</div>
+				
+				<div class="col-md-6" id="advanced" align="left">
+					<h3>Update Frequency</h3>
+					<select class="frequencySelect" id="timeFrequency">
+						<option value="0">Every Time</option>
+						<option value="30">Every 30 Minutes</option>
+						<option value="60">Every 1 Hour</option>
+						<option value="180">Every 3 Hours</option>
+					</select>
+		
+					<select class="frequencySelect" id="distanceFrequency">
+						<option value="3">Move 100 Metres</option>
+						<option value="2">Move 1 Kilometre</option>
+						<option value="1">Move 10 Kilometres</option>
+					</select>
+				</div>
+			</div>
 		</div>
+		
+		<br/><br/>
 		
 		<p>
 			<button id="save_button">Save</button>
