@@ -4,15 +4,13 @@
 		<title>Wrist Weather Settings</title>
 		
 		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<script src="js/jquery-2.1.3.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		
 		<style>
 			body {
 				text-align: center;
 				background: #faf8ef;
-			}
-			
-			input {
-				width: 20px;
-				height: 20px;
 			}
 			
 			.frequencySelect {
@@ -31,16 +29,26 @@
 			<div class="row">
 				<div class="col-md-6" id="content" align="left">
 					<h3>Content of Daily Summary</h3>
-					<form>
-						<input type="checkbox" class="dailySummaryOptionElements" name="temp" value="temperature">
-						<label for="temp">Temperature</label></br>
-						<input type="checkbox" class="dailySummaryOptionElements" name="precip" value="precipitation">
-						<label for="precip">Precipitation</label></br>
-						<input type="checkbox" class="dailySummaryOptionElements" name="light" value="light">
-						<label for="light">Light</label></br>
-						<input type="checkbox" class="dailySummaryOptionElements" name="misc" value="misc">
-						<label for="misc">Miscellaneous</label></br>
-					</form>
+					<div class="form-group">
+						<div class="btn-group btn-group-justified" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="checkbox" class="dailySummaryOptionElements" value="temp">
+								Temp
+							</label>
+							<label class="btn btn-primary">
+								<input type="checkbox" class="dailySummaryOptionElements" value="precip">
+								Precip
+							</label>
+							<label class="btn btn-primary">
+								<input type="checkbox" class="dailySummaryOptionElements" value="light">
+								Light
+							</label>
+							<label class="btn btn-primary">
+								<input type="checkbox" class="dailySummaryOptionElements" value="misc">
+								Misc
+							</label>
+						</div>
+					</div>
 				</div>
 				
 				<div class="col-md-6" id="advanced" align="left">
@@ -63,13 +71,14 @@
 		
 		<br/><br/>
 		
-		<p>
-			<button id="save_button">Save</button>
-			<button id="reset_button">Reset</button>
-		</p>
+		<div class="container-fluid">
+			<div class="row">
+				<button id="save_button" class="col-xs-offset-4 col-xs-4 btn btn-success">Save</button>
+			</div>
+		</div>
 		
 		<script>
-			var dailySummaryOptionElements = document.getElementsByClassName("dailySummaryOptionElements");
+			var dailySummaryOptionElements = $(".dailySummaryOptionElements");
 			var savedSettings = localStorage.settings;
 			
 			if (savedSettings !== undefined) {
@@ -77,11 +86,15 @@
 				
 				var dailySummaryOptionValues = savedSettings.dailySummaryOptions;
 				for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
-					dailySummaryOptionElements[i].checked = dailySummaryOptionValues[dailySummaryOptionElements[i].name];
+					dailySummaryOptionElements[i].checked = dailySummaryOptionValues[dailySummaryOptionElements[i].value];
+					
+					if (dailySummaryOptionElements[i].checked) {
+						dailySummaryOptionElements[i].parentElement.className = dailySummaryOptionElements[i].parentElement.className + " active";
+					}
 				}
 				
-				document.getElementById("timeFrequency").value = savedSettings.updateFrequency.time;
-				document.getElementById("distanceFrequency").value = savedSettings.updateFrequency.distance;
+				$("#timeFrequency")[0].value = savedSettings.updateFrequency.time;
+				$("#distanceFrequency")[0].value = savedSettings.updateFrequency.distance;
 			}
 			
 			function saveOptions() {
@@ -91,11 +104,11 @@
         		};
         		
         		for (var i = 0, length = dailySummaryOptionElements.length; i < length; i++) {
-        			settings.dailySummaryOptions[dailySummaryOptionElements[i].name] = dailySummaryOptionElements[i].checked;
+        			settings.dailySummaryOptions[dailySummaryOptionElements[i].value] = dailySummaryOptionElements[i].checked;
         		}
         		
-        		settings.updateFrequency.time = document.getElementById("timeFrequency").value;
-        		settings.updateFrequency.distance = document.getElementById("distanceFrequency").value;
+        		settings.updateFrequency.time = $("#timeFrequency")[0].value;
+        		settings.updateFrequency.distance = $("#distanceFrequency")[0].value;
         		
         		settings = JSON.stringify(settings);
         		console.log(settings);
@@ -103,21 +116,11 @@
         		return settings;
       		}
       		
-      		var resetButton = document.getElementById("reset_button");
-      		resetButton.addEventListener("click",
+      		$("#save_button").click(
       			function () {
-      				localStorage.removeItem("settings");
-      			},
-      			false
-      		);
-      		
-      		var submitButton = document.getElementById("save_button");
-      		submitButton.addEventListener("click", 
-        		function () {
         			console.log("Pebble close");
           			document.location = "pebblejs://close#" + encodeURIComponent(saveOptions());
-        		},
-        		false
+        		}
       		);
 		</script>
 	</body>
