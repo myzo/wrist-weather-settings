@@ -1,24 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Wrist Weather Settings</title>
-		
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<script src="js/jquery-2.1.3.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
-		
-		<style>
-			body {
-				text-align: center;
-				background: #faf8ef;
-			}
-			
-			.frequencySelect {
-				height: 30px;
-			}
-		</style>
+
+		<title>Wrist Weather Settings</title>
 	</head>
-	<body>
+	<body style="text-align: center;">
 		<div class="container-fluid">
 			<div class="jumbotron">
 				<h1>Settings</h1>
@@ -27,7 +16,7 @@
 		
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-6" id="content" align="left">
+				<div class="col-md-6" align="left">
 					<h3>Content of Daily Summary</h3>
 					<div class="form-group">
 						<div class="btn-group btn-group-justified" data-toggle="buttons">
@@ -51,20 +40,45 @@
 					</div>
 				</div>
 				
-				<div class="col-md-6" id="advanced" align="left">
+				<div class="col-md-6" align="left">
 					<h3>Update Frequency</h3>
-					<select class="frequencySelect" id="timeFrequency">
-						<option value="0">Every Time</option>
-						<option value="30">Every 30 Minutes</option>
-						<option value="60">Every 1 Hour</option>
-						<option value="180">Every 3 Hours</option>
-					</select>
-		
-					<select class="frequencySelect" id="distanceFrequency">
-						<option value="3">Move 100 Metres</option>
-						<option value="2">Move 1 Kilometre</option>
-						<option value="1">Move 10 Kilometres</option>
-					</select>
+					<div class="form-group">
+						<div class="btn-group btn-group-justified" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input class="timeFrequency" type="radio" value="0">
+								Each Time
+							</label>
+							<label class="btn btn-primary">
+								<input class="timeFrequency" type="radio" value="30">
+								30 Mins
+							</label>
+							<label class="btn btn-primary">
+								<input class="timeFrequency" type="radio" value="60">
+								1 Hour
+							</label>
+							<label class="btn btn-primary">
+								<input class="timeFrequency" type="radio" value="180">
+								3 Hours
+							</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group btn-group-justified" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input class="distanceFrequency" type="radio" value="3">
+								100m
+							</label>
+							<label class="btn btn-primary">
+								<input class="distanceFrequency" type="radio" value="2">
+								1km
+							</label>
+							<label class="btn btn-primary">
+								<input class="distanceFrequency" type="radio" value="1">
+								10km
+							</label>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -73,12 +87,14 @@
 		
 		<div class="container-fluid">
 			<div class="row">
-				<button id="save_button" class="col-xs-offset-4 col-xs-4 btn btn-success">Save</button>
+				<button id="save_button" class="col-xs-offset-3 col-xs-6 btn btn-primary">Save</button>
 			</div>
 		</div>
 		
 		<script>
 			var dailySummaryOptionElements = $(".dailySummaryOptionElements");
+			var timeFrequencyElements = $(".timeFrequency");
+			var distanceFrequencyElements = $(".distanceFrequency");
 			var savedSettings = localStorage.settings;
 			
 			if (savedSettings !== undefined) {
@@ -89,12 +105,29 @@
 					dailySummaryOptionElements[i].checked = dailySummaryOptionValues[dailySummaryOptionElements[i].value];
 					
 					if (dailySummaryOptionElements[i].checked) {
-						dailySummaryOptionElements[i].parentElement.className = dailySummaryOptionElements[i].parentElement.className + " active";
+						dailySummaryOptionElements[i].parentElement.classList.add("active");
 					}
 				}
 				
-				$("#timeFrequency")[0].value = savedSettings.updateFrequency.time;
-				$("#distanceFrequency")[0].value = savedSettings.updateFrequency.distance;
+				var timeFrequencyValue = savedSettings.updateFrequency.time;
+				for (var i = 0, length = timeFrequencyElements.length; i < length; i++) {
+					if (timeFrequencyElements[i].value === timeFrequencyValue) {
+						timeFrequencyElements[i].checked = true;
+						timeFrequencyElements[i].parentElement.classList.add("active");
+						break;
+					}
+				}
+				
+				var distanceFrequencyValue = savedSettings.updateFrequency.distance;
+				for (var i = 0, length = distanceFrequencyElements.length; i < length; i++) {
+					if (distanceFrequencyElements[i].value === distanceFrequencyValue) {
+						distanceFrequencyElements[i].checked = true;
+						distanceFrequencyElements[i].parentElement.classList.add("active");
+						break;
+					}
+				}
+			} else {
+				
 			}
 			
 			function saveOptions() {
@@ -107,8 +140,8 @@
         			settings.dailySummaryOptions[dailySummaryOptionElements[i].value] = dailySummaryOptionElements[i].checked;
         		}
         		
-        		settings.updateFrequency.time = $("#timeFrequency")[0].value;
-        		settings.updateFrequency.distance = $("#distanceFrequency")[0].value;
+        		settings.updateFrequency.time = $(".timeFrequency:checked").val();
+        		settings.updateFrequency.distance = $(".distanceFrequency:checked").val();
         		
         		settings = JSON.stringify(settings);
         		console.log(settings);
